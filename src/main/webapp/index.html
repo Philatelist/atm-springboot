@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>YourApp</title>
+    <script src="js/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+<h1> HELLO WORLD </h1>
+<input type="text" id="data"/>
+<a id="post" href="#">POST</a>
+<a id="get" href="#">GET</a>
+
+<br>Login:<input type="text" id="login"/>
+<br>Password:<input type="text" id="password"/>
+<a id="log-in" href="#">LOGIN</a> or
+<a id="join" href="#">JOIN</a>
+
+
+<br>Name:<input type="text" id="name"/>
+<br>E-mail:<input type="text" id="email"/>
+<br>Password:<input type="text" id="reg-password"/>
+<br>Confirm password:<input type="text" id="conf-password"/>
+
+<a id="registration" href="#">REGISTRATION</a>
+<a id="delete" href="#">DELETE USER</a>
+
+<a id="findAll" href="#">GET USER</a>
+
+
+<div id="container"></div>
+</body>
+
+<script>
+    $('#findAll').click(function () {
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: '/findAll',
+            data: "",
+            success: function (response) {
+                var html = "";
+                $.each(response.data, function (i) {
+                    html = html + response.data[i] + "<br/>";
+                });
+                $('#container').html(html);
+            }
+        });
+    });
+
+    $('#registration').click(function () {
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var passw = $("#reg-password").val();
+        var arr = [name, email, passw]
+
+        if (!name) {
+            alert("Enter your Name!");
+        } else {
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '/insert',
+                data: {
+                    'data': name
+                },
+                success: function (response) {
+                    $('#findAll').click();
+                }
+            });
+        }
+    });
+
+    $('#delete').click(function () {
+        if (!$("#name").val()) {
+            alert("Enter Name!");
+        } else {
+            $.ajax({
+                type: "POST",
+                cache: false,
+                url: '/delete',
+                data: {
+                    'data': $("#name").val()
+                },
+                success: function (response) {
+                    $('#findAll').click();
+                }
+            });
+        }
+
+    });
+
+</script>
+
+</html>
