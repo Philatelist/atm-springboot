@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,12 +43,11 @@ public class UserController extends ExceptionHandlerController {
 
             Object obj = parser.parse(userParam);
             JSONObject jsonObject = (JSONObject) obj;
-//            List<String> arr = new ArrayList<>();
-//            arr.add((String) jsonObject.get("name"));
-//            arr.add((String) jsonObject.get("email"));
-//            arr.add((String) jsonObject.get("password"));
+            List<String> arr = new ArrayList<>();
+            arr.add((String) jsonObject.get("name"));
+            arr.add((String) jsonObject.get("email"));
+            arr.add((String) jsonObject.get("password"));
 
-            String arr = (String) jsonObject.get("name") + jsonObject.get("email") + jsonObject.get("password");
             userService.insert(arr);
 
             log.info((String) jsonObject.get("email"));

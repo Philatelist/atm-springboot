@@ -20,12 +20,12 @@ public class UserRepositoryImpl implements UserRepository<User> {
     @Override
     public void insert(User user) {
 
-        Object[] params = new Object[] { user.getId(), user.getName()};
-        int[] types = new int[] { Types.VARCHAR, Types.VARCHAR};
+        Object[] params = new Object[] { user.getId(), user.getName(), user.getEmail(), user.getPassword()};
+        int[] types = new int[] { Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
 
         jdbcOperations.update("INSERT INTO users(\n" +
-                "            users_id, name)\n" +
-                "    VALUES (cast(? as UUID), ?);", params, types);
+                "            users_id, name, email, password)\n" +
+                "    VALUES (cast(? as UUID), ?, ?, ?);", params, types);
     }
 
     @Override
@@ -37,9 +37,9 @@ public class UserRepositoryImpl implements UserRepository<User> {
     @Override
     public Set<String> findAll() {
         Set<String> result = new HashSet<>();
-        SqlRowSet rowSet = jdbcOperations.queryForRowSet("SELECT * FROM users ORDER BY RANDOM() ASC;");
+        SqlRowSet rowSet = jdbcOperations.queryForRowSet("SELECT * FROM users ORDER BY name DESC;");
         while (rowSet.next()) {
-            result.add(rowSet.getString("name"));
+            result.add(rowSet.getString("name") + " " + rowSet.getString("email") + " " + rowSet.getString("password"));
         }
         return result;
     }

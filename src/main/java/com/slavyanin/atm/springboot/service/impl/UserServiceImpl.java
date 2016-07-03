@@ -8,25 +8,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-    private static final Logger LOG = org.jboss.logging.Logger.getLogger(UserServiceImpl.class);
+    private static final Logger log = org.jboss.logging.Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     @Qualifier("userRepository")
     private UserRepository userRepository;
 
     @Override
-    public boolean insert(String userParam) {
+    public boolean insert(List<String> userParam) {
         try {
-            userRepository.insert(new User(UUID.randomUUID(), userParam));
+            userRepository.insert(new User(UUID.randomUUID(), userParam.get(0), userParam.get(1), userParam.get(2)));
             return true;
         } catch (Exception e) {
-            LOG.error("ERROR SAVING DATA: " + e.getMessage(), e);
+            log.error("ERROR SAVING DATA: " + e.getMessage(), e);
             return false;
         }
     }
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
             userRepository.delete(new User(UUID.randomUUID(), userEmail));
 
         } catch (Exception e) {
-            LOG.error("ERROR DELETE DATA: " + e.getMessage(), e);
+            log.error("ERROR DELETE DATA: " + e.getMessage(), e);
 
         }
     }
