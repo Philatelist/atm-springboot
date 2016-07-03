@@ -1,9 +1,5 @@
 package com.slavyanin.atm.springboot.config;
 
-//import com.apple.eawt.Application;
-
-//import com.sun.glass.ui.Application;
-
 import com.slavyanin.atm.springboot.Application;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

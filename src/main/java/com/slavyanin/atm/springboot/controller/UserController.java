@@ -4,7 +4,10 @@ import com.slavyanin.atm.springboot.service.UserService;
 import com.slavyanin.atm.springboot.utils.Ajax;
 import com.slavyanin.atm.springboot.utils.ExceptionHandlerController;
 import com.slavyanin.atm.springboot.utils.RestException;
-import org.jboss.logging.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -19,28 +22,45 @@ import java.util.Set;
 @Controller
 public class UserController extends ExceptionHandlerController {
 
-    private static final Logger LOG = Logger.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     @Qualifier("userService")
     private UserService userService;
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> insert(@RequestParam("data") String userParam) throws RestException {
+
+        JSONParser parser = new JSONParser();
         try {
             if (userParam == null || userParam.equals("")) {
                 return Ajax.emptyResponse();
             }
-            userService.insert(userParam);
+
+            Object obj = parser.parse(userParam);
+            JSONObject jsonObject = (JSONObject) obj;
+//            List<String> arr = new ArrayList<>();
+//            arr.add((String) jsonObject.get("name"));
+//            arr.add((String) jsonObject.get("email"));
+//            arr.add((String) jsonObject.get("password"));
+
+            String arr = (String) jsonObject.get("name") + jsonObject.get("email") + jsonObject.get("password");
+            userService.insert(arr);
+
+            log.info((String) jsonObject.get("email"));
+
             return Ajax.emptyResponse();
         } catch (Exception e) {
+            log.error(String.valueOf(e));
             throw new RestException(e);
         }
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> delete(@RequestParam("data") String emailUser) throws RestException {
         try {
             if (emailUser == null || emailUser.equals("")) {
@@ -54,7 +74,8 @@ public class UserController extends ExceptionHandlerController {
     }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     Map<String, Object> getRandomData() throws RestException {
         try {
             Set<String> result = userService.findAll();

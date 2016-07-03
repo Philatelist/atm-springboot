@@ -49,12 +49,7 @@
     });
 
     $('#registration').click(function () {
-        var name = $("#name").val();
-        var email = $("#email").val();
-        var passw = $("#reg-password").val();
-        var arr = [name, email, passw]
-
-        if (!name) {
+        if (!$("#name").val()) {
             alert("Enter your Name!");
         } else {
             $.ajax({
@@ -62,7 +57,11 @@
                 cache: false,
                 url: '/insert',
                 data: {
-                    'data': name
+                    'data': JSON.stringify({
+                        name: $("#name").val(),
+                        email: $("#email").val(),
+                        password: $("#reg-password").val()
+                    })
                 },
                 success: function (response) {
                     $('#findAll').click();
