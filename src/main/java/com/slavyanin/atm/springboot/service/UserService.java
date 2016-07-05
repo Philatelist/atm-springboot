@@ -1,13 +1,17 @@
 package com.slavyanin.atm.springboot.service;
 
+import com.slavyanin.atm.springboot.entity.User;
+
 import java.util.List;
 import java.util.Set;
 
 public interface UserService {
 
-    public boolean insert(List<String> user);
+    boolean insert(List<String> user);
 
-    public void delete(String userEmail);
+    void delete(String userEmail);
 
-    public Set<String> findAll();
+    Set<String> findAll();
+
+    Set<User> findAllUsers();
 }

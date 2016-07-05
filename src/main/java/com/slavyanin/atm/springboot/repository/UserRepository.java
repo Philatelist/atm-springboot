@@ -1,6 +1,7 @@
 package com.slavyanin.atm.springboot.repository;
 
 import com.slavyanin.atm.springboot.entity.DomainObject;
+import com.slavyanin.atm.springboot.entity.User;
 
 import java.util.Set;
 
@@ -11,4 +12,6 @@ public interface UserRepository<V extends DomainObject> {
     void delete(V object);
 
     Set<String> findAll();
+
+    Set<User> findAllUsers();
 }

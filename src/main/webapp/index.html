@@ -6,10 +6,8 @@
     <script src="js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<h1> HELLO WORLD </h1>
-<input type="text" id="data"/>
-<a id="post" href="#">POST</a>
-<a id="get" href="#">GET</a>
+<h1> REGISTRATION FORM </h1>
+
 
 <br>Login:<input type="text" id="login"/>
 <br>Password:<input type="text" id="password"/>
@@ -51,18 +49,22 @@
     $('#registration').click(function () {
         if (!$("#name").val()) {
             alert("Enter your Name!");
+        } else if (!$("#email").val()) {
+            alert("Enter your E-mail!");
+        } else if (!$("#reg-password").val() || !$("#conf-password").val()) {
+            alert("Please enter or confirm password!");
+        } else if ($("#reg-password").val() != $("#conf-password").val()) {
+            alert("The password is not confirmed!");
         } else {
             $.ajax({
                 type: "POST",
                 cache: false,
                 url: '/insert',
-                data: {
-                    'data': JSON.stringify({
+                data: JSON.stringify({
                         name: $("#name").val(),
                         email: $("#email").val(),
                         password: $("#reg-password").val()
-                    })
-                },
+                    }),
                 success: function (response) {
                     $('#findAll').click();
                 }

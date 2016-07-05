@@ -43,4 +43,17 @@ public class UserRepositoryImpl implements UserRepository<User> {
         }
         return result;
     }
+
+    @Override
+    public Set<User> findAllUsers() {
+        Set<User> result = new HashSet<>();
+        SqlRowSet rowSet = jdbcOperations.queryForRowSet("SELECT * FROM users ORDER BY name DESC;");
+
+        while (rowSet.next()) {
+            User user = new User(rowSet.getString("name"), rowSet.getString("email"), rowSet.getString("password"));
+            result.add(user);
+        }
+
+        return result;
+    }
 }

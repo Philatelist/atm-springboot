@@ -1,5 +1,6 @@
 package com.slavyanin.atm.springboot.controller;
 
+import com.slavyanin.atm.springboot.entity.User;
 import com.slavyanin.atm.springboot.service.UserService;
 import com.slavyanin.atm.springboot.utils.Ajax;
 import com.slavyanin.atm.springboot.utils.ExceptionHandlerController;
@@ -34,6 +35,8 @@ public class UserController extends ExceptionHandlerController {
     public
     @ResponseBody
     Map<String, Object> insert(@RequestParam("data") String userParam) throws RestException {
+
+        log.info(userParam);
 
         JSONParser parser = new JSONParser();
         try {
@@ -79,7 +82,7 @@ public class UserController extends ExceptionHandlerController {
     @ResponseBody
     Map<String, Object> getRandomData() throws RestException {
         try {
-            Set<String> result = userService.findAll();
+            Set<User> result = userService.findAllUsers();
             return Ajax.successResponse(result);
         } catch (Exception e) {
             throw new RestException(e);
