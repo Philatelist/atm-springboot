@@ -1,18 +1,67 @@
 CREATE DATABASE bankPostgres;
 
 DROP TABLE IF EXISTS users;
-  CREATE TABLE users
-  (
-    users_id uuid NOT NULL,
-    name character varying(100) NOT NULL,
-    email character varying(100) NOT NULL,
-    password character varying(100) NOT NULL,
-    CONSTRAINT users_id_pk PRIMARY KEY (users_id)
-  )
+CREATE TABLE users
+(
+  users_id uuid NOT NULL,
+  name CHARACTER varying(100) NOT NULL,
+  email CHARACTER varying(100) NOT NULL,
+  password CHARACTER varying(100) NOT NULL,
+  CONSTRAINT users_id_pk PRIMARY KEY (users_id)
+)
 WITH (
-  OIDS=FALSE
+OIDS=FALSE
 );
-ALTER TABLE users
-  OWNER TO postgres;
 
+DROP TABLE IF EXISTS roles;
+CREATE TABLE roles (
+  id   INTEGER NOT NULL,
+  name CHARACTER VARYING(255)     NOT NULL,
+  CONSTRAINT roles_id_pk PRIMARY KEY (id)
+)
+WITH (
+OIDS=FALSE
+);
 
+BEGIN WORK;
+LOCK TABLE roles;
+INSERT INTO roles VALUES (1, 'ATM_ADMIN');
+INSERT INTO roles VALUES (2, 'ATM_CLIENT');
+COMMIT WORK;
+
+DROP TABLE IF EXISTS accounts;
+CREATE TABLE accounts (
+  id            INTEGER NOT NULL,
+  user_id       INTEGER NOT NULL,
+  ballance      INTEGER NOT NULL,
+  last_modified DATE,
+  CONSTRAINT accounts_id_pk PRIMARY KEY (id)
+)
+WITH (
+OIDS=FALSE
+);
+
+DROP TABLE IF EXISTS atm;
+CREATE TABLE atm (
+  id        INTEGER NOT NULL,
+  banknotes INTEGER NOT NULL,
+  amount    INTEGER NOT NULL,
+  CONSTRAINT atm_id_pk PRIMARY KEY (id)
+)
+WITH (
+OIDS=FALSE
+);
+
+BEGIN WORK;
+LOCK TABLE atm;
+INSERT INTO atm VALUES (1, 5, 50);
+INSERT INTO atm VALUES (2, 10, 50);
+INSERT INTO atm VALUES (3, 20, 50);
+INSERT INTO atm VALUES (4, 50, 50);
+INSERT INTO atm VALUES (5, 100, 50);
+INSERT INTO atm VALUES (6, 200, 50);
+INSERT INTO atm VALUES (7, 500, 50);
+COMMIT WORK;
+
+ALTER TABLE atm
+OWNER TO postgres;

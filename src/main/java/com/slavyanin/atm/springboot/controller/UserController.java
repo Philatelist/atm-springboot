@@ -1,5 +1,8 @@
 package com.slavyanin.atm.springboot.controller;
 
+import com.slavyanin.atm.springboot.entity.Atm;
+import com.slavyanin.atm.springboot.entity.User;
+import com.slavyanin.atm.springboot.service.AtmService;
 import com.slavyanin.atm.springboot.service.UserService;
 import com.slavyanin.atm.springboot.utils.Ajax;
 import com.slavyanin.atm.springboot.utils.ExceptionHandlerController;
@@ -30,10 +33,16 @@ public class UserController extends ExceptionHandlerController {
     @Qualifier("userService")
     private UserService userService;
 
+    @Autowired
+    @Qualifier("atmService")
+    private AtmService atmService;
+
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     public
     @ResponseBody
     Map<String, Object> insert(@RequestParam("data") String userParam) throws RestException {
+
+        log.info(userParam);
 
         JSONParser parser = new JSONParser();
         try {
@@ -79,7 +88,19 @@ public class UserController extends ExceptionHandlerController {
     @ResponseBody
     Map<String, Object> getRandomData() throws RestException {
         try {
-            Set<String> result = userService.findAll();
+            Set<User> result = userService.findAll();
+            return Ajax.successResponse(result);
+        } catch (Exception e) {
+            throw new RestException(e);
+        }
+    }
+
+    @RequestMapping(value = "/checkBanknotes", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, Object> checkBanknotes() throws RestException {
+        try {
+            Set<Atm> result = atmService.checkBanknotes();
             return Ajax.successResponse(result);
         } catch (Exception e) {
             throw new RestException(e);

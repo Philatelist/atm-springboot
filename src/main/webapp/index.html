@@ -6,26 +6,27 @@
     <script src="js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<h1> HELLO WORLD </h1>
-<input type="text" id="data"/>
-<a id="post" href="#">POST</a>
-<a id="get" href="#">GET</a>
-
+<h1> LOGIN FORM </h1>
 <br>Login:<input type="text" id="login"/>
 <br>Password:<input type="text" id="password"/>
 <a id="log-in" href="#">LOGIN</a> or
 <a id="join" href="#">JOIN</a>
 
-
+<h1> REGISTRATION FORM </h1>
 <br>Name:<input type="text" id="name"/>
 <br>E-mail:<input type="text" id="email"/>
 <br>Password:<input type="text" id="reg-password"/>
 <br>Confirm password:<input type="text" id="conf-password"/>
-
 <a id="registration" href="#">REGISTRATION</a>
-<a id="delete" href="#">DELETE USER</a>
+<a id="goBack" href="#">GO BACK</a>
 
-<a id="findAll" href="#">GET USER</a>
+
+<h1> ADMIN PANEL </h1>
+<br> <input type="submit" value="GET USERS" id="findAll"/>
+<br> <input type="submit" value="CHECK AVAILABILITY BANKNOTES in ATM" id="checkBanknotes"/>
+<br> <input type="submit" value="FILL ATM" id="fillAtm"/>
+<br>E-mail:<input type="text" id="emailAdmin"/>
+<a id="delete" href="#">DELETE USER</a>
 
 
 <div id="container"></div>
@@ -48,9 +49,31 @@
         });
     });
 
+    $('#checkBanknotes').click(function () {
+        $.ajax({
+            type: "GET",
+            cache: false,
+            url: '/checkBanknotes',
+            data: "",
+            success: function (response) {
+                var html = "";
+                $.each(response.data, function (i) {
+                    html = html + response.data[i] + "<br/>";
+                });
+                $('#container').html(html);
+            }
+        });
+    });
+
     $('#registration').click(function () {
         if (!$("#name").val()) {
             alert("Enter your Name!");
+        } else if (!$("#email").val()) {
+            alert("Enter your E-mail!");
+        } else if (!$("#reg-password").val() || !$("#conf-password").val()) {
+            alert("Please enter or confirm password!");
+        } else if ($("#reg-password").val() != $("#conf-password").val()) {
+            alert("The password is not confirmed!");
         } else {
             $.ajax({
                 type: "POST",
@@ -67,6 +90,7 @@
                     $('#findAll').click();
                 }
             });
+
         }
     });
 
