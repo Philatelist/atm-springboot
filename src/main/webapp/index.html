@@ -60,15 +60,18 @@
                 type: "POST",
                 cache: false,
                 url: '/insert',
-                data: JSON.stringify({
+                data: {
+                    'data': JSON.stringify({
                         name: $("#name").val(),
                         email: $("#email").val(),
                         password: $("#reg-password").val()
-                    }),
+                    })
+                },
                 success: function (response) {
                     $('#findAll').click();
                 }
             });
+
         }
     });
 
