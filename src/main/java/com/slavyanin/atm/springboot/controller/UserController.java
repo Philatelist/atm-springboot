@@ -82,7 +82,7 @@ public class UserController extends ExceptionHandlerController {
     @ResponseBody
     Map<String, Object> getRandomData() throws RestException {
         try {
-            Set<User> result = userService.findAllUsers();
+            Set<User> result = userService.findAll();
             return Ajax.successResponse(result);
         } catch (Exception e) {
             throw new RestException(e);

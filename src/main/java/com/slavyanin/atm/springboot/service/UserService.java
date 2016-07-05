@@ -11,7 +11,5 @@ public interface UserService {
 
     void delete(String userEmail);
 
-    Set<String> findAll();
-
-    Set<User> findAllUsers();
+    Set<User> findAll();
 }

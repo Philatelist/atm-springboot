@@ -44,12 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<String> findAll() {
+    public Set<User> findAll() {
         return userRepository.findAll();
-    }
-
-    @Override
-    public Set<User> findAllUsers() {
-        return userRepository.findAllUsers();
     }
 }

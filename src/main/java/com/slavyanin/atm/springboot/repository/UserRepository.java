@@ -11,7 +11,5 @@ public interface UserRepository<V extends DomainObject> {
 
     void delete(V object);
 
-    Set<String> findAll();
-
-    Set<User> findAllUsers();
+    Set<User> findAll();
 }
