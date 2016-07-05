@@ -15,7 +15,7 @@ import java.util.UUID;
 @Service("userService")
 public class UserServiceImpl implements UserService {
 
-    private static final Logger log = org.jboss.logging.Logger.getLogger(UserServiceImpl.class);
+    private static final Logger log = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     @Qualifier("userRepository")
