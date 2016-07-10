@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @SpringBootApplication
 @EnableAutoConfiguration
@@ -37,6 +40,16 @@ public class Application {
 	public Principal user(Principal user) {
 		return user;
 	}
+
+
+	@RequestMapping("/resource")
+	public Map<String, Object> home() {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("id", UUID.randomUUID().toString());
+		model.put("content", "Hello World");
+		return model;
+	}
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(new Class<?>[] {Application.class, JpaConfig.class}, args);
@@ -53,6 +66,16 @@ public class Application {
 					.csrfTokenRepository(csrfTokenRepository()).and()
 					.csrf().csrfTokenRepository(csrfTokenRepository());
 		}
+
+//		@Autowired
+//		public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
+//			auth.inMemoryAuthentication()
+//					.withUser("user").password("user").roles("USER")
+//					.and()
+//					.withUser("admin").password("admin").roles("USER", "ADMIN", "READER", "WRITER")
+//					.and()
+//					.withUser("audit").password("audit").roles("USER", "ADMIN", "READER");
+//		}
 
 		public class CsrfHeaderFilter extends OncePerRequestFilter {
 
