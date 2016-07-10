@@ -2,16 +2,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>YourApp</title>
+    <title>ATM Registration form</title>
     <script src="js/jquery-2.1.4.min.js"></script>
 </head>
 <body>
-<h1> LOGIN FORM </h1>
-<br>Login:<input type="text" id="login"/>
-<br>Password:<input type="text" id="password"/>
-<br> <input type="submit" value="LOGIN" id="log-in"/>
-<input type="submit" value="JOIN" id="join"/>
-<p>Click <a href="@{/registration}">here</a>
 
 <h1> REGISTRATION FORM </h1>
 <br>Name:<input type="text" id="name"/>
@@ -19,24 +13,6 @@
 <br>Password:<input type="text" id="reg-password"/>
 <br>Confirm password:<input type="text" id="conf-password"/>
 <br> <input type="submit" value="REGISTRATION" id="registration"/> <input type="submit" value="EXIT" id="goBack"/>
-
-<h1> USER FORM </h1>
-<br> <input type="submit" value="CHECK BALANCE" id="checkBallance"/>
-<br>How much money do You need?<input type="text" id="howMuchMoneyGet"/>
-<input type="submit" value="GET MONEY" id="getMoney"/>
-<br>
-<br>How much money You want to add to Your balance?<input type="text" id="howMuchMoneyAdd"/>
-<input type="submit" value="ADD MONEY" id="addMoney"/>
-
-
-
-<h1> ADMIN PANEL </h1>
-<br> <input type="submit" value="GET USERS" id="findAll"/>
-<br> <input type="submit" value="CHECK AVAILABILITY BANKNOTES in ATM" id="checkBanknotes"/>
-<br> <input type="submit" value="FILL ATM" id="fillAtm"/>
-<br>E-mail:<input type="text" id="emailAdmin"/>
-<input type="submit" value="DELETE USER" id="delete"/>
-
 
 <div id="container"></div>
 </body>
@@ -47,22 +23,6 @@
             type: "GET",
             cache: false,
             url: '/findAll',
-            data: "",
-            success: function (response) {
-                var html = "";
-                $.each(response.data, function (i) {
-                    html = html + response.data[i] + "<br/>";
-                });
-                $('#container').html(html);
-            }
-        });
-    });
-
-    $('#checkBanknotes').click(function () {
-        $.ajax({
-            type: "GET",
-            cache: false,
-            url: '/checkBanknotes',
             data: "",
             success: function (response) {
                 var html = "";
@@ -101,25 +61,6 @@
             });
 
         }
-    });
-
-    $('#delete').click(function () {
-        if (!$("#emailAdmin").val()) {
-            alert("Enter Email!");
-        } else {
-            $.ajax({
-                type: "POST",
-                cache: false,
-                url: '/delete',
-                data: {
-                    'data': $("#emailAdmin").val()
-                },
-                success: function (response) {
-                    $('#findAll').click();
-                }
-            });
-        }
-
     });
 
 </script>
