@@ -1,4 +1,4 @@
-package com.slavyanin.atm.springboot.entity;
+package com.slavyanin.atm.springboot.model;
 
 import java.util.UUID;
 
@@ -8,6 +8,9 @@ public class User implements DomainObject{
     private String name;
     private String email;
     private String password;
+
+    public User() {
+    }
 
     public User(UUID id, String name, String email, String password) {
         this.id = id;

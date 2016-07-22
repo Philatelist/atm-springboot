@@ -1,6 +1,6 @@
 package com.slavyanin.atm.springboot.repository.impl;
 
-import com.slavyanin.atm.springboot.entity.User;
+import com.slavyanin.atm.springboot.model.User;
 import com.slavyanin.atm.springboot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;

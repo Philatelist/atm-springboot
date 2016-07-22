@@ -1,6 +1,6 @@
 package com.slavyanin.atm.springboot.service;
 
-import com.slavyanin.atm.springboot.entity.User;
+import com.slavyanin.atm.springboot.model.User;
 
 import java.util.List;
 import java.util.Set;

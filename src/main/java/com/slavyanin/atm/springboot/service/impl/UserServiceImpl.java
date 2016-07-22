@@ -1,6 +1,6 @@
 package com.slavyanin.atm.springboot.service.impl;
 
-import com.slavyanin.atm.springboot.entity.User;
+import com.slavyanin.atm.springboot.model.User;
 import com.slavyanin.atm.springboot.repository.UserRepository;
 import com.slavyanin.atm.springboot.service.UserService;
 import org.jboss.logging.Logger;
