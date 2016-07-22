@@ -1,7 +1,7 @@
 package com.slavyanin.atm.springboot.repository;
 
-import com.slavyanin.atm.springboot.entity.Atm;
-import com.slavyanin.atm.springboot.entity.DomainObject;
+import com.slavyanin.atm.springboot.model.Atm;
+import com.slavyanin.atm.springboot.model.DomainObject;
 
 import java.util.Set;
 

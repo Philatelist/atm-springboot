@@ -1,7 +1,7 @@
 package com.slavyanin.atm.springboot.repository.impl;
 
-import com.slavyanin.atm.springboot.entity.Atm;
-import com.slavyanin.atm.springboot.entity.DomainObject;
+import com.slavyanin.atm.springboot.model.Atm;
+import com.slavyanin.atm.springboot.model.DomainObject;
 import com.slavyanin.atm.springboot.repository.AtmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;

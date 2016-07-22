@@ -1,6 +1,6 @@
 package com.slavyanin.atm.springboot.service.impl;
 
-import com.slavyanin.atm.springboot.entity.Atm;
+import com.slavyanin.atm.springboot.model.Atm;
 import com.slavyanin.atm.springboot.repository.AtmRepository;
 import com.slavyanin.atm.springboot.service.AtmService;
 import org.jboss.logging.Logger;
