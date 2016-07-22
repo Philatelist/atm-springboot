@@ -1,4 +1,4 @@
-package com.slavyanin.atm.springboot.entity;
+package com.slavyanin.atm.springboot.model;
 
 import java.io.Serializable;
 

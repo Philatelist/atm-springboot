@@ -1,0 +1,68 @@
+dataSource:
+  driverClassName : org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/bankPostgres
+  username: postgres
+  password: 3254
+
+hibernate:
+  dialect: org.hibernate.dialect.PostgreSQLDialect
+  hbm2ddl.auto: update
+
+logging:
+  level.org.springframework.web: INFO
+  level.guru.springframework.blogs.controllers: INFO
+  level.org.hibernate: ERROR
+  file: logs/spring-boot-logging.log
+
+log4j:
+  logger.org.thymeleaf: DEBUG
+
+---
+
+security:
+  oauth2:
+    client:
+      clientId: 683903700561-g7q39qv01fuq88ebjko34e5lep1anddn.apps.googleusercontent.com
+      clientSecret: usfP6hibq6f6Y60LKbnWQ8nz
+      accessTokenUri: https://www.googleapis.com/oauth2/v3/token
+      userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+#      scope: https://www.googleapis.com/auth/userinfo.email
+      scope: profile email, https://www.googleapis.com/auth/calendar
+#      tokenName: oauth_token
+      authenticationScheme: query
+#      clientAuthenticationScheme: form
+    resource:
+      userInfoUri: https://www.googleapis.com/oauth2/v3/userinfo
+      preferTokenInfo: true
+
+
+#security:
+#  oauth2:
+#    client:
+#      clientId: 233668646673605
+#      clientSecret: 33b17e044ee6a4fa383f46ec6e28ea1d
+#      accessTokenUri: https://graph.facebook.com/oauth/access_token
+#      userAuthorizationUri: https://www.facebook.com/dialog/oauth
+#      tokenName: oauth_token
+#      authenticationScheme: query
+#      clientAuthenticationScheme: form
+#    resource:
+#      userInfoUri: https://graph.facebook.com/me
+
+---
+
+#server:
+#    port: 8080
+#    contextPath: /
+#
+#security:
+#    basic:
+#        enabled: false
+#
+#config:
+#    oauth2:
+#        clientId: 683903700561-g7q39qv01fuq88ebjko34e5lep1anddn.apps.googleusercontent.com
+#        clientSecret: usfP6hibq6f6Y60LKbnWQ8nz
+#        accessTokenUri: https://www.googleapis.com/oauth2/v3/token
+#        userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+#        resourceURI: http://localhost:8080/
