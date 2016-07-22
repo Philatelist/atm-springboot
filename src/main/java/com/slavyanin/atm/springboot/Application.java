@@ -1,23 +1,28 @@
 package com.slavyanin.atm.springboot;
 
+import com.slavyanin.atm.springboot.config.CustomOAuth2RestTemplate;
 import com.slavyanin.atm.springboot.config.JpaConfig;
+import com.slavyanin.atm.springboot.utils.RestException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoRestTemplateCustomizer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -30,42 +35,49 @@ import java.security.Principal;
 @EnableAutoConfiguration
 @ComponentScan
 @Configuration
+@EnableOAuth2Sso
 @RestController
-public class Application {
+public class Application extends WebSecurityConfigurerAdapter{
 
-	@RequestMapping("/user")
-	public Principal user(Principal user) {
-		return user;
-	}
+	UserInfoRestTemplateCustomizer customOauth2Template = new CustomOAuth2RestTemplate();
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public Principal user(Principal user) throws RestException {
+        try {
+            return user;
+        } catch (Exception e) {
+            throw new RestException(e);
+        }
+    }
 
 	public static void main(String[] args) {
 		SpringApplication.run(new Class<?>[] {Application.class, JpaConfig.class}, args);
 	}
 
-	@Configuration
-	@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
-	protected static class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-		@Override
-		protected void configure(HttpSecurity http) throws Exception {
-			http.httpBasic().and().authorizeRequests()
-					.antMatchers("/index.html", "/home.html", "/login.html", "/").permitAll().anyRequest()
-					.authenticated().and().csrf()
-					.csrfTokenRepository(csrfTokenRepository()).and()
-					.csrf().csrfTokenRepository(csrfTokenRepository());
-		}
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+				.antMatcher("/**")
+				.authorizeRequests()
+				.antMatchers("/", "/login**", "/webjars/**", "/insert")
+				.permitAll()
+				.anyRequest()
+				.authenticated()
+				.and().logout().logoutSuccessUrl("/").permitAll()
+				.and().csrf().csrfTokenRepository(csrfTokenRepository())
+				.and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
+	}
 
-		public class CsrfHeaderFilter extends OncePerRequestFilter {
-
+	private Filter csrfHeaderFilter() {
+		return new OncePerRequestFilter() {
 			@Override
-			protected void doFilterInternal(HttpServletRequest request,
-											HttpServletResponse response, FilterChain filterChain)
-					throws ServletException, IOException {
-				CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class
-						.getName());
+			protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+											FilterChain filterChain) throws ServletException, IOException {
+				CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
 				if (csrf != null) {
 					Cookie cookie = WebUtils.getCookie(request, "XSRF-TOKEN");
 					String token = csrf.getToken();
-					if (cookie==null || token!=null && !token.equals(cookie.getValue())) {
+					if (cookie == null || token != null && !token.equals(cookie.getValue())) {
 						cookie = new Cookie("XSRF-TOKEN", token);
 						cookie.setPath("/");
 						response.addCookie(cookie);
@@ -73,12 +85,12 @@ public class Application {
 				}
 				filterChain.doFilter(request, response);
 			}
-		}
+		};
+	}
 
-		private CsrfTokenRepository csrfTokenRepository() {
-			HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
-			repository.setHeaderName("X-XSRF-TOKEN");
-			return repository;
-		}
+	private CsrfTokenRepository csrfTokenRepository() {
+		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		repository.setHeaderName("X-XSRF-TOKEN");
+		return repository;
 	}
 }
